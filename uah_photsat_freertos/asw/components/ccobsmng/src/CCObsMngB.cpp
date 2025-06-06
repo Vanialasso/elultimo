@@ -68,7 +68,7 @@ void	CCObsMng::EDROOM_CTX_Top_0::FDoAttitudeCtrl()
 
 {
 
- pus_service129_do_attitude_ctrl() 
+ pus_service129_do_attitude_ctrl();
 
 }
 
