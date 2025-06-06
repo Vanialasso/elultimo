@@ -27,6 +27,7 @@ asw/components/ccbkgtcexec/src \
 asw/components/cchk_fdirmng/src \
 asw/components/ccobsmng/src \
 asw/components/cctcmanager/src \
+asw/components/obsmng/src \
 asw/components/uahphotsat/src \
 asw/dataclasses/CDEvAction/src \
 asw/dataclasses/CDTCHandler/src \

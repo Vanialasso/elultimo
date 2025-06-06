@@ -12,8 +12,6 @@
 #include "pus_service129/aux_pus_service129_exec_tc.h"
 #include "pus_service129/aux_pus_service129_observ_mng.h"
 
-
-
 void pus_service129_startup() {
 
 	emu_attitude_init();
@@ -28,23 +26,30 @@ void pus_service129_startup() {
 
 }
 
-
 void pus_service129_do_attitude_ctrl() {
-
 
 	//Apply Control Algorithm
 	pus_service129_apply_ctrl_algorithm();
 
 	pus_service129_update_system_data_pool();
 
-
-
 }
 
 void pus_service129_exec_tc(tc_handler_t *ptc_handler) {
 
 //TODO Complete the execution logic of TC[129,1], TC[129,2] & TC[129,3]
+	switch (ptc_handler->tc_df_header.subtype) {
+	case (1):
+		pus_service129_exec_TC_129_1(ptc_handler);
 
+		break;
+	case (2):
+		pus_service129_exec_TC_129_2(ptc_handler);
+		break;
+	case (3):
+		pus_service129_exec_TC_129_3(ptc_handler);
+		break;
+	}
 }
 
 void pus_service129_start_observation() {
@@ -53,17 +58,15 @@ void pus_service129_start_observation() {
 
 }
 
-
-void pus_service129_take_image(){
+void pus_service129_take_image() {
 
 	pus_service129_mng_image_adquisition();
 
 }
 
+bool_t pus_service129_is_last_image() {
 
-bool_t pus_service129_is_last_image(){
-
-	return (0==pus_service129_get_pending_num_of_images());
+	return (0 == pus_service129_get_pending_num_of_images());
 
 }
 
@@ -73,10 +76,9 @@ void pus_service129_end_observation() {
 
 }
 
+bool_t pus_service129_is_observation_ready() {
 
-bool_t pus_service129_is_observation_ready(){
-
-	return (pus_service129_attitude_error_under_limits()&&
-			pus_service129_get_pending_num_of_images());
+	return (pus_service129_attitude_error_under_limits()
+			&& pus_service129_get_pending_num_of_images());
 
 }
