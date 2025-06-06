@@ -11,7 +11,7 @@
 	// CONSTRUCTORS***********************************************
 
 CCObsMng::EDROOM_CTX_Top_0::EDROOM_CTX_Top_0(CCObsMng &act,
-	 Pr_Time & EDROOMpVarVNextTimeout ):
+	 Pr_Time & EDROOMpVarVNextTimeOut ):
 
 	EDROOMcomponent(act),
 	Msg(EDROOMcomponent.Msg),
@@ -20,7 +20,7 @@ CCObsMng::EDROOM_CTX_Top_0::EDROOM_CTX_Top_0(CCObsMng &act,
 	ObservTimer(EDROOMcomponent.ObservTimer),
 	AttCtrlTimer(EDROOMcomponent.AttCtrlTimer),
 	CImageInterval(0,500000),
-	VNextTimeout(EDROOMpVarVNextTimeout)
+	VNextTimeOut(EDROOMpVarVNextTimeOut)
 {
 }
 
@@ -33,7 +33,7 @@ CCObsMng::EDROOM_CTX_Top_0::EDROOM_CTX_Top_0(EDROOM_CTX_Top_0 &context):
 	ObservTimer(context.ObservTimer),
 	AttCtrlTimer(context.AttCtrlTimer),
 	CImageInterval(0,500000),
-	VNextTimeout(context.VNextTimeout)
+	VNextTimeOut(context.VNextTimeOut)
 {
 
 }
@@ -192,7 +192,7 @@ bool	CCObsMng::EDROOM_CTX_Top_0::GReadyToObservation()
 
 CCObsMng::EDROOM_SUB_Top_0::EDROOM_SUB_Top_0 (CCObsMng&act):
 		EDROOM_CTX_Top_0(act,
-			VNextTimeout)
+			VNextTimeOut)
 {
 
 }
