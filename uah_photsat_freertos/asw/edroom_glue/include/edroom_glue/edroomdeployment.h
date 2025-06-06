@@ -16,7 +16,7 @@
 #include <public/ccbkgtcexec_iface_v1.h>
 #include <public/cchk_fdirmng_iface_v1.h>
 #include <public/cctcmanager_iface_v1.h>
-#include <public/obsmng_iface_v1.h>
+#include <public/ccobsmng_iface_v1.h>
 // ***********************************************************************
 // class CEDROOMSystemMemory
 // ***********************************************************************
@@ -59,7 +59,7 @@ class CEDROOMSystemMemory{
 	CCBKGTCExec::CEDROOMMemory comp2Memory;
 	CCHK_FDIRMng::CEDROOMMemory comp3Memory;
 	CCTCManager::CEDROOMMemory comp4Memory;
-	ObsMng::CEDROOMMemory comp5Memory;
+	CCObsMng::CEDROOMMemory comp5Memory;
  
 //!Set Memory
 	void SetMemory();
@@ -81,7 +81,7 @@ class CEDROOMSystemCommSAP{
 	CCBKGTCExec   * mp_comp2;
 	CCHK_FDIRMng   * mp_comp3;
 	CCTCManager   * mp_comp4;
-	ObsMng   * mp_comp5;
+	CCObsMng   * mp_comp5;
  
  
 //!Set Components
@@ -90,7 +90,7 @@ class CEDROOMSystemCommSAP{
 							CCBKGTCExec   *p_comp2,
 							CCHK_FDIRMng   *p_comp3,
 							CCTCManager   *p_comp4,
-							ObsMng   *p_comp5);
+							CCObsMng   *p_comp5);
  
  
 //Signal Conversion
@@ -141,7 +141,7 @@ static Pr_TaskRV_t main_task(Pr_TaskP_t);
 	CCBKGTCExec   * mp_comp2;
 	CCHK_FDIRMng   * mp_comp3;
 	CCTCManager   * mp_comp4;
-	ObsMng   * mp_comp5;
+	CCObsMng   * mp_comp5;
  
 	public:
  
@@ -152,7 +152,7 @@ static Pr_TaskRV_t main_task(Pr_TaskP_t);
 					CCBKGTCExec   *p_comp2,
 					CCHK_FDIRMng   *p_comp3,
 					CCTCManager   *p_comp4,
-					ObsMng   *p_comp5);
+					CCObsMng   *p_comp5);
  
 //!Deployment Start
 	void Start();
@@ -165,7 +165,7 @@ static Pr_TaskRV_t main_task(Pr_TaskP_t);
 	CCBKGTCExec::CEDROOMMemory 		* GetComp2Memory(){return &systemMemory.comp2Memory;}
 	CCHK_FDIRMng::CEDROOMMemory 		* GetComp3Memory(){return &systemMemory.comp3Memory;}
 	CCTCManager::CEDROOMMemory 		* GetComp4Memory(){return &systemMemory.comp4Memory;}
-	ObsMng::CEDROOMMemory 		* GetComp5Memory(){return &systemMemory.comp5Memory;}
+	CCObsMng::CEDROOMMemory 		* GetComp5Memory(){return &systemMemory.comp5Memory;}
  
 };
 #endif

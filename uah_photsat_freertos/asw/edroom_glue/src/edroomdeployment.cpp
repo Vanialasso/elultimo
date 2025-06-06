@@ -12,7 +12,7 @@ void MainWait(UAHPhotSat   &comp1,
 					CCBKGTCExec   &comp2,
 					CCHK_FDIRMng   &comp3,
 					CCTCManager   &comp4,
-					ObsMng   &comp5){
+					CCObsMng   &comp5){
  
 	Pr_Time waitTime(3, 0);
  
@@ -54,7 +54,7 @@ void CEDROOMSystemCommSAP::SetComponents(UAHPhotSat   *p_comp1,
 										CCBKGTCExec   *p_comp2,
 										CCHK_FDIRMng   *p_comp3,
 										CCTCManager   *p_comp4,
-										ObsMng   *p_comp5){
+										CCObsMng   *p_comp5){
 	mp_comp1=p_comp1;
 	mp_comp2=p_comp2;
 	mp_comp3=p_comp3;
@@ -89,7 +89,7 @@ TEDROOMSignal CEDROOMSystemCommSAP::C4TCManager_PObsmng__C5ObsMng_PObsmng(TEDROO
  
 	switch(signalOut){
  
-		case( CCTCManager::SObsMng_TC):	 signalIn=ObsMng::SObsMng_TC; break;
+		case( CCTCManager::SObsMng_TC):	 signalIn=CCObsMng::SObsMng_TC; break;
  
 		default: signalIn=(TEDROOMSignal)(-1); break;
  
@@ -242,7 +242,7 @@ void CEDROOMSystemDeployment::Config(UAHPhotSat   *p_comp1,
 											CCBKGTCExec   *p_comp2,
 											CCHK_FDIRMng   *p_comp3,
 											CCTCManager   *p_comp4,
-											ObsMng   *p_comp5){
+											CCObsMng   *p_comp5){
  
 	mp_comp1=p_comp1;
 	mp_comp2=p_comp2;
