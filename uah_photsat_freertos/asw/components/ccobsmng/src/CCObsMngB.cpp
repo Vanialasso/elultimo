@@ -140,7 +140,7 @@ void	CCObsMng::EDROOM_CTX_Top_0::FTakeImage()
 
 {
 
- pus_service129_take_image()
+ pus_service129_take_image();
 
 }
 
@@ -150,7 +150,7 @@ void	CCObsMng::EDROOM_CTX_Top_0::FToObservation()
 
 {
 
-pus_service129_is_observation_ready()
+pus_service129_is_observation_ready();
 
 }
 
@@ -160,7 +160,7 @@ bool	CCObsMng::EDROOM_CTX_Top_0::GLastImage()
 
 {
 
-return pus_service129_is_last_image()
+return pus_service129_is_last_image();
 
 }
 
@@ -170,7 +170,7 @@ bool	CCObsMng::EDROOM_CTX_Top_0::GReadyToObservation()
 
 {
 
- return pus_service129_is_observation_ready()
+ return pus_service129_is_observation_ready();
 
 }
 
