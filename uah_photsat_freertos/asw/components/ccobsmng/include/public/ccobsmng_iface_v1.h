@@ -196,11 +196,11 @@ public:
 		//!Transition Identifiers
 		enum TEDROOMTransitionID{Init,
 			DoAttitudeCtrl,
-			DoAttitudeCtrl_ToObservation(),
+			DoAttitudeCtrl_ToObservation,
 			DoAttitudeCtrl_ProgAttitudeCtrl,
-			TakeImage(),
-			TakeImage()_ObservationProg,
-			TakeImage()_ProgTakeImage(),
+			TakeImage,
+			TakeImage_ObservationProg,
+			TakeImage_ProgTakeImage,
 			ExecObsMngTC,
 			EDROOMMemoryTrans };
 

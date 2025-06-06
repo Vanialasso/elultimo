@@ -228,15 +228,15 @@ void CCObsMng::EDROOM_SUB_Top_0::EDROOMBehaviour()
 
 				//Execute Action 
 				FDoAttitudeCtrl();
-				//Evaluate Branch ToObservation()
+				//Evaluate Branch ToObservation
 				if( GReadyToObservation() )
 				{
 					//Execute Action 
 					FToObservation();
 
-					//Branch taken is DoAttitudeCtrl_ToObservation()
+					//Branch taken is DoAttitudeCtrl_ToObservation
 					edroomCurrentTrans.localId =
-						DoAttitudeCtrl_ToObservation();
+						DoAttitudeCtrl_ToObservation;
 
 					//Next State is Observation
 					edroomNextState = Observation;
@@ -255,8 +255,8 @@ void CCObsMng::EDROOM_SUB_Top_0::EDROOMBehaviour()
 					edroomNextState = Standby;
 				 } 
 				break;
-			//To Choice Point TakeImage()
-			case (TakeImage()):
+			//To Choice Point TakeImage
+			case (TakeImage):
 
 				//Execute Action 
 				FTakeImage();
@@ -267,22 +267,22 @@ void CCObsMng::EDROOM_SUB_Top_0::EDROOMBehaviour()
 					FEndObservation();
 					FProgAttitudeCtrl();
 
-					//Branch taken is TakeImage()_ObservationProg
+					//Branch taken is TakeImage_ObservationProg
 					edroomCurrentTrans.localId =
-						TakeImage()_ObservationProg;
+						TakeImage_ObservationProg;
 
 					//Next State is Standby
 					edroomNextState = Standby;
 				 } 
-				//Default Branch ProgTakeImage()
+				//Default Branch ProgTakeImage
 				else
 				{
 					//Execute Action 
 					FProgTakeImage();
 
-					//Branch taken is TakeImage()_ProgTakeImage()
+					//Branch taken is TakeImage_ProgTakeImage
 					edroomCurrentTrans.localId =
-						TakeImage()_ProgTakeImage();
+						TakeImage_ProgTakeImage;
 
 					//Next State is Observation
 					edroomNextState = Observation;
@@ -457,8 +457,8 @@ TEDROOMTransId CCObsMng::EDROOM_SUB_Top_0::EDROOMObservationArrival()
 				 if (*Msg->GetPInterface() == ObservTimer)
 				{
 
-					//Next transition is  TakeImage()
-					edroomCurrentTrans.localId = TakeImage();
+					//Next transition is  TakeImage
+					edroomCurrentTrans.localId = TakeImage;
 					edroomCurrentTrans.distanceToContext = 0 ;
 					edroomValidMsg=true;
 				 }
