@@ -399,15 +399,15 @@ void CCTCManager::EDROOM_SUB_Top_0::EDROOMBehaviour()
 					//Next State is Ready
 					edroomNextState = Ready;
 				 } 
-				//Evaluate Branch FFwdObsMngTC()
+				//Evaluate Branch FFwdObsMngTC
 				else if( GFwdToHK_FDIR() )
 				{
 					//Send Asynchronous Message 
 					FFwdHK_FDIRTC();
 
-					//Branch taken is HandleTC_FFwdObsMngTC()
+					//Branch taken is HandleTC_FFwdObsMngTC
 					edroomCurrentTrans.localId =
-						HandleTC_FFwdObsMngTC();
+						HandleTC_FFwdObsMngTC;
 
 					//Next State is Ready
 					edroomNextState = Ready;

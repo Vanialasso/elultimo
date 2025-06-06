@@ -252,7 +252,7 @@ public:
 			HandleTC_ToReboot,
 			HandleTC_FwdHK_FDIRTC,
 			HandleTC_FwdToBKGTCExec,
-			HandleTC_FFwdObsMngTC(),
+			HandleTC_FFwdObsMngTC,
 			HandleTC_ExecPrioTC,
 			NewEvAction,
 			EDROOMMemoryTrans };
