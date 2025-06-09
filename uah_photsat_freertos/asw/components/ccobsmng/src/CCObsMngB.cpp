@@ -113,7 +113,7 @@ void	CCObsMng::EDROOM_CTX_Top_0::FProgAttitudeCtrl()
 	 
 	//interval = Pr_Time(X,Y); // interval of X sec + Y microsec
 VNextTimeOut+= Pr_Time(1,0); // Add X sec + Y microsec 
-time=VNextTimeout; 
+time=VNextTimeOut; 
 
    //Program relative timer 
    ObservTimer.InformIn( interval ); 
