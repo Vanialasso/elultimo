@@ -112,8 +112,8 @@ void	CCObsMng::EDROOM_CTX_Top_0::FProgAttitudeCtrl()
 	//Timing Service useful methods
 	 
 	//interval = Pr_Time(X,Y); // interval of X sec + Y microsec
-VNextTimeOut+= Pr_Time(1,0); // Add X sec + Y microsec 
-time=VNextTimeOut; 
+interval = Pr_Time(1,0); // Add X sec + Y microsec 
+
 
    //Program relative timer 
    ObservTimer.InformIn( interval ); 
