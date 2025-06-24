@@ -1,0 +1,143 @@
+import "../../../dataclasses/CDTCHandler/models/CDTCHandler.ed_dclass";
+import "../../../protocols/CPBKGExecCtrl/models/CPBKGExecCtrl.ed_prot";
+import "../../../protocols/EDROOMServiceLibrary/models/EDROOMServiceLibrary.ed_prot";
+
+
+
+/**
+ * \class   CCBKGTCExec
+ *
+ */
+
+
+reactive component CCBKGTCExec{
+
+	uri := es.uah.aut.srg.edroom.mclev.cmp.CCBKGTCExec;
+	version := v1;
+	stack_size := 1024;
+	def_max_nb_messages := 10;
+
+
+	structure {
+
+		ports {
+
+
+			system port EDROOMsl
+			{
+				id:= 0;
+				protocol:= EDROOMServiceLibrary(v1);
+			};
+			external port BKGExecCtrl {
+				id := 1;
+				cardinality := 1;
+				protocol := CPBKGExecCtrl(v1);
+
+			};
+
+
+
+		};
+
+
+	};
+
+
+	behaviour {
+
+		contexts {
+
+
+			context Top_0{
+
+
+				id := 0;
+
+
+				states {
+					state I{
+						id := 0;
+					};
+					state Ready{
+						id := 1;
+					};
+				};
+
+
+				init state := I;
+
+
+				items{
+					/**
+					 * \brief  
+					 */
+
+					msgdatahandler FExecBKGTC {
+						code {
+							<code>
+							 
+								
+									// Data access
+								
+								varSBKGTC.ExecTC();
+
+
+							</code>
+						};
+
+						port :=BKGExecCtrl;
+
+						message :=CPBKGExecCtrl(v1)::SBKGTC;
+
+					};
+
+
+				};
+
+
+				transitions{
+
+					transition Init{
+						id := 0;
+						source := I;
+						sink := Ready;
+
+
+
+						asynchronous trigger {
+							port := EDROOMsl;
+							message := EDROOMServiceLibrary(v1)::EDROOMStart;
+						};
+					};
+
+					transition ExecTC{
+						id := 1;
+						source := Ready;
+						sink := Ready;
+
+
+						msgdatahandler := FExecBKGTC;
+
+
+						asynchronous trigger {
+							port := BKGExecCtrl;
+							message := CPBKGExecCtrl(v1)::SBKGTC;
+						};
+					};
+
+
+				};
+
+
+			};
+
+
+		};
+
+		top context := Top_0;
+
+
+	};
+
+
+};

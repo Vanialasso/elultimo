@@ -1,0 +1,245 @@
+import "../../../dataclasses/Pr_Time/models/Pr_Time.ed_dclass";
+import "../../../protocols/EDROOMTimingSAP/models/EDROOMTimingSAP.ed_prot";
+import "../../../protocols/EDROOMServiceLibrary/models/EDROOMServiceLibrary.ed_prot";
+import "../../../components/ccbkgtcexec/models/CCBKGTCExec.ed_cmp";
+import "../../../components/cchk_fdirmng/models/CCHK_FDIRMng.ed_cmp";
+import "../../../components/cctcmanager/models/CCTCManager.ed_cmp";
+import "../../../components/ccobsmng/models/CCObsMng.ed_cmp";
+import "../../../sais/emu_hw_timecode_drv_v1/models/emu_hw_timecode_drv_v1.ed_sai";
+
+
+
+/**
+ * \class   UAHPhotSat
+ *
+ */
+
+
+no_pattern component UAHPhotSat{
+
+	uri := es.uah.aut.srg.edroom.mclev.cmp.UAHPhotSat;
+	version := v1;
+	stack_size := 1024;
+	def_max_nb_messages := 10;
+	requires := emu_hw_timecode_drv(v1);
+
+
+
+
+	structure {
+
+		ports {
+
+
+			system port EDROOMsl
+			{
+				id:= 0;
+				protocol:= EDROOMServiceLibrary(v1);
+			};
+			timing port Timer {
+				id := 1;
+				protocol := EDROOMTimingSAP(v1);
+
+			};
+
+
+
+		};
+
+
+		instances {
+
+
+			instance BKGTCExec
+			{
+				class := CCBKGTCExec(v1);
+				max_nb_messages := 10;
+				priority :=5;
+			};
+			instance HK_FDIRMng
+			{
+				class := CCHK_FDIRMng(v1);
+				max_nb_messages := 13;
+				priority :=3;
+			};
+			instance TCManager
+			{
+				class := CCTCManager(v1);
+				max_nb_messages := 10;
+				priority :=3;
+			};
+			instance ObsMng
+			{
+				class := CCObsMng(v1);
+				max_nb_messages := 15;
+				priority :=1;
+			};
+		};
+
+
+		connections {
+			connection ObsMng.Obsmng<->TCManager.Obsmng;
+			connection TCManager.BKGExecCtrl<->BKGTCExec.BKGExecCtrl;
+			connection TCManager.HK_FDIRCtrl<->HK_FDIRMng.HK_FDIRCtrl;
+		};
+
+
+	};
+
+
+	behaviour {
+
+		contexts {
+
+
+			context Top_0{
+
+
+				id := 0;
+
+
+				variables {
+					variable VEmuTimeCode{
+					 class := Pr_Time(v1);
+
+					 constructor := "";
+					 dimension := 0;
+					};
+
+
+				};
+
+
+				states {
+					state I{
+						id := 0;
+					};
+					state Ready{
+						id := 1;
+
+						exit actions := FProgTimer;
+					};
+				};
+
+
+				init state := I;
+
+
+				items{
+					/**
+					 * \brief  
+					 */
+
+					inform at FEmuInit {
+						code {
+							<code>
+							 
+							VEmuTimeCode.GetTime();
+							 
+							EmuHwTimeCodeStartUp();
+								 
+							VEmuTimeCode.GetTime();	
+							VEmuTimeCode+=Pr_Time(1,0);
+							 
+							time=VEmuTimeCode;
+
+
+							</code>
+						};
+
+						port :=Timer;
+
+						priority :=1;
+
+					};
+
+					/**
+					 * \brief  
+					 */
+
+					action FEmuRxTimeCode {
+						<code>
+						 
+						EmuHwTimeCodePassSecond();
+						 
+
+
+						</code>
+
+					};
+
+					/**
+					 * \brief  
+					 */
+
+					inform at FProgTimer {
+						code {
+							<code>
+							 
+								
+							  VEmuTimeCode+=Pr_Time(1,0);
+							 
+							  time=VEmuTimeCode;
+
+
+							</code>
+						};
+
+						port :=Timer;
+
+						priority :=1;
+
+					};
+
+
+				};
+
+
+				transitions{
+
+					transition Init{
+						id := 0;
+						source := I;
+						sink := Ready;
+
+
+						actions := FEmuInit;
+
+
+						asynchronous trigger {
+							port := EDROOMsl;
+							message := EDROOMServiceLibrary(v1)::EDROOMStart;
+						};
+					};
+
+					transition NextTimeCode{
+						id := 1;
+						source := Ready;
+						sink := Ready;
+
+
+						actions := FEmuRxTimeCode;
+
+
+						asynchronous trigger {
+							port := Timer;
+							message := EDROOMTimingSAP(v1)::EDROOMSignalTimeout;
+						};
+					};
+
+
+				};
+
+
+			};
+
+
+		};
+
+		top context := Top_0;
+
+
+	};
+
+
+};

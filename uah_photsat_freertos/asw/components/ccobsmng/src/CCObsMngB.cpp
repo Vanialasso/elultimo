@@ -106,17 +106,18 @@ void	CCObsMng::EDROOM_CTX_Top_0::Finit()
 void	CCObsMng::EDROOM_CTX_Top_0::FProgAttitudeCtrl()
 
 {
-   //Define interval
-  Pr_Time interval;
-	
+   //Define absolute time
+  Pr_Time time;
+	 
 	//Timing Service useful methods
 	 
-	//interval = Pr_Time(X,Y); // interval of X sec + Y microsec
-interval = Pr_Time(1,0); // Add X sec + Y microsec 
-
-
-   //Program relative timer 
-   ObservTimer.InformIn( interval ); 
+	//time.GetTime(); // Get current monotonic time
+	//time.Add(X,Y); // Add X sec + Y microsec
+	
+VNextTimeout+= Pr_Time(1,0); // Add X sec + Y microsec 
+time=VNextTimeout; 
+   //Program absolute timer 
+   ObservTimer.InformAt( time ); 
 }
 
 
@@ -127,7 +128,7 @@ void	CCObsMng::EDROOM_CTX_Top_0::FProgTakeImage()
    //Define interval
   Pr_Time interval;
 	
-
+ 
 	//time.Add(X,Y); // Add X sec + Y microsec
 interval=CImageInterval;
    //Program relative timer 

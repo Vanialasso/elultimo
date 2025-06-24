@@ -1,0 +1,419 @@
+import "../../../dataclasses/Pr_Time/models/Pr_Time.ed_dclass";
+import "../../../protocols/CPObsmng/models/CPObsmng.ed_prot";
+import "../../../protocols/EDROOMTimingSAP/models/EDROOMTimingSAP.ed_prot";
+import "../../../protocols/EDROOMServiceLibrary/models/EDROOMServiceLibrary.ed_prot";
+import "../../../sais/pus_services_iface_v1/models/pus_services_iface_v1.ed_sai";
+
+
+
+/**
+ * \class   CCObsMng
+ *
+ */
+
+
+reactive component CCObsMng{
+
+	uri := es.uah.aut.srg.edroom.mclev.cmp.CCObsMng;
+	version := v1;
+	stack_size := 1024;
+	def_max_nb_messages := 10;
+	requires := pus_services_iface(v1);
+
+
+
+
+	structure {
+
+		ports {
+
+
+			system port EDROOMsl
+			{
+				id:= 0;
+				protocol:= EDROOMServiceLibrary(v1);
+			};
+			external port Obsmng {
+				id := 1;
+				cardinality := 1;
+				protocol := CPObsmng(v1);
+
+			};
+
+			timing port ObservTimer {
+				id := 2;
+				protocol := EDROOMTimingSAP(v1);
+
+			};
+
+			timing port AttCtrlTimer {
+				id := 3;
+				protocol := EDROOMTimingSAP(v1);
+
+			};
+
+
+
+		};
+
+
+	};
+
+
+	behaviour {
+
+		contexts {
+
+
+			context Top_0{
+
+
+				id := 0;
+
+
+				variables {
+					variable VNextTimeOut{
+					 class := Pr_Time(v1);
+
+					 constructor := "";
+					 dimension := 0;
+					};
+
+
+				};
+
+
+				constants {
+					constant CImageInterval{
+					 class := Pr_Time(v1);
+
+					 constructor := "0,500000";
+					 dimension := 0;
+					};
+
+
+				};
+
+
+				states {
+					state I{
+						id := 0;
+					};
+					state Standby{
+						id := 1;
+					};
+					state Observation{
+						id := 2;
+
+						entry actions := FProgTakeImage;
+					};
+				};
+
+
+				init state := I;
+
+
+				guards{
+
+					/**
+					 * \brief  
+					 */
+
+					guard GLastImage {
+						<code>
+						return pus_service129_is_last_image();
+
+
+						</code>
+
+					};
+
+					/**
+					 * \brief  
+					 */
+
+					guard GReadyToObservation {
+						<code>
+						 return pus_service129_is_observation_ready();
+
+
+						</code>
+
+					};
+
+
+				};
+
+
+				items{
+					/**
+					 * \brief  
+					 */
+
+					action FDoAttitudeCtrl {
+						<code>
+						 pus_service129_do_attitude_ctrl();
+
+
+						</code>
+
+					};
+
+					/**
+					 * \brief  
+					 */
+
+					action FEndObservation {
+						<code>
+						VNextTimeOut.GetTime();
+						 pus_service129_end_observation();
+
+
+						</code>
+
+					};
+
+					/**
+					 * \brief  
+					 */
+
+					action FExecObsMng_TC {
+						<code>
+
+
+						</code>
+
+					};
+
+					/**
+					 * \brief  
+					 */
+
+					action Finit {
+						<code>
+
+
+						</code>
+
+					};
+
+					/**
+					 * \brief  
+					 */
+
+					inform at FProgAttitudeCtrl {
+						code {
+							<code>
+								 
+								//Timing Service useful methods
+								 
+								//time.GetTime(); // Get current monotonic time
+								//time.Add(X,Y); // Add X sec + Y microsec
+								
+							VNextTimeout+= Pr_Time(1,0); // Add X sec + Y microsec 
+							time=VNextTimeout; 
+
+
+							</code>
+						};
+
+						port :=ObservTimer;
+
+						priority :=3;
+
+					};
+
+					/**
+					 * \brief  
+					 */
+
+					inform in FProgTakeImage {
+						code {
+							<code>
+								
+							 
+								//time.Add(X,Y); // Add X sec + Y microsec
+							interval=CImageInterval;
+
+
+							</code>
+						};
+
+						port :=ObservTimer;
+
+						priority :=3;
+
+					};
+
+					/**
+					 * \brief  
+					 */
+
+					action FTakeImage {
+						<code>
+						 pus_service129_take_image();
+
+
+						</code>
+
+					};
+
+					/**
+					 * \brief  
+					 */
+
+					action FToObservation {
+						<code>
+						pus_service129_is_observation_ready();
+
+
+						</code>
+
+					};
+
+
+				};
+
+
+				choice points{
+					choice point DoAttitudeCtrl{
+
+
+						id := 0;
+
+
+						branches{
+
+							branch DoAttitudeCtrl_ToObservation{
+								id := 0;
+								sink := Observation;
+
+
+								actions := FToObservation;
+
+								guard := GReadyToObservation;
+
+							};
+
+
+						};
+
+						default branch DoAttitudeCtrl_ProgAttitudeCtrl{
+							id := 1;
+							sink := Standby;
+
+
+							actions := FProgAttitudeCtrl;
+						};
+					};
+					choice point TakeImage{
+
+
+						id := 1;
+
+
+						branches{
+
+							branch TakeImage_ObservationProg{
+								id := 0;
+								sink := Standby;
+
+
+								actions := FEndObservation, FProgAttitudeCtrl;
+
+								guard := GLastImage;
+
+							};
+
+
+						};
+
+						default branch TakeImage_ProgTakeImage{
+							id := 1;
+							sink := Observation;
+
+
+							actions := FProgTakeImage;
+						};
+					};
+				};
+
+
+				transitions{
+
+					transition Init{
+						id := 0;
+						source := I;
+						sink := Standby;
+
+
+						actions := Finit;
+
+
+						asynchronous trigger {
+							port := EDROOMsl;
+							message := EDROOMServiceLibrary(v1)::EDROOMStart;
+						};
+					};
+
+					transition DoAttitudeCtrl{
+						id := 1;
+						source := Standby;
+						sink := DoAttitudeCtrl;
+
+
+						actions := FDoAttitudeCtrl;
+
+
+						asynchronous trigger {
+							port := AttCtrlTimer;
+							message := EDROOMTimingSAP(v1)::EDROOMSignalTimeout;
+						};
+					};
+
+					transition TakeImage{
+						id := 2;
+						source := Observation;
+						sink := TakeImage;
+
+
+						actions := FTakeImage;
+
+
+						asynchronous trigger {
+							port := ObservTimer;
+							message := EDROOMTimingSAP(v1)::EDROOMSignalTimeout;
+						};
+					};
+
+					transition ExecObsMngTC{
+						id := 3;
+						source := Standby;
+						sink := Standby;
+
+
+						actions := FExecObsMng_TC;
+
+
+						asynchronous trigger {
+							port := Obsmng;
+							message := CPObsmng(v1)::SObsMng_TC;
+						};
+					};
+
+
+				};
+
+
+			};
+
+
+		};
+
+		top context := Top_0;
+
+
+	};
+
+
+};
