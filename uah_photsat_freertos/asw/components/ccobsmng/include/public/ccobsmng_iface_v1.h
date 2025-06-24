@@ -194,14 +194,14 @@ public:
 			Observation};
 
 		//!Transition Identifiers
-		enum TEDROOMTransitionID{Init,
-			DoAttitudeCtrl,
+		enum TEDROOMTransitionID{DoAttitudeCtrl,
 			DoAttitudeCtrl_ToObservation,
 			DoAttitudeCtrl_ProgAttitudeCtrl,
 			TakeImage,
 			TakeImage_ObservationProg,
 			TakeImage_ProgTakeImage,
 			ExecObsMngTC,
+			Init,
 			EDROOMMemoryTrans };
 
 		//!Constants
@@ -264,11 +264,6 @@ public:
 		/**
 		 * \brief  
 		 */
-		void	Finit();
-
-		/**
-		 * \brief  
-		 */
 		void	FProgAttitudeCtrl();
 
 		/**
@@ -295,6 +290,11 @@ public:
 		 * \brief  
 		 */
 		bool	GReadyToObservation();
+
+		/**
+		 * \brief 
+		 */
+		void	FInit();
 
 	};
 

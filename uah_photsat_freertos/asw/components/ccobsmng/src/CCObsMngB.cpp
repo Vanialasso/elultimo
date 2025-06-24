@@ -94,15 +94,6 @@ void	CCObsMng::EDROOM_CTX_Top_0::FExecObsMng_TC()
 
 
 
-void	CCObsMng::EDROOM_CTX_Top_0::Finit()
-
-{
-
-
-}
-
-
-
 void	CCObsMng::EDROOM_CTX_Top_0::FProgAttitudeCtrl()
 
 {
@@ -177,6 +168,24 @@ bool	CCObsMng::EDROOM_CTX_Top_0::GReadyToObservation()
 
 
 
+void	CCObsMng::EDROOM_CTX_Top_0::FInit()
+
+{
+   //Define absolute time
+  Pr_Time time;
+	 
+	//Timing Service useful methods
+	 
+	//time.GetTime(); // Get current monotonic time
+	//time.Add(X,Y); // Add X sec + Y microsec
+VNextTimeOut+= Pr_Time(1,0); // Add X sec + Y microsec 
+time=VNextTimeOut; 
+   //Program absolute timer 
+   ObservTimer.InformAt( time ); 
+}
+
+
+
 	//********************************** Pools *************************************
 
 
@@ -217,13 +226,6 @@ void CCObsMng::EDROOM_SUB_Top_0::EDROOMBehaviour()
 		switch(edroomCurrentTrans.localId)
 		{
 
-			//Next Transition is Init
-			case (Init):
-				//Execute Action 
-				Finit();
-				//Next State is Standby
-				edroomNextState = Standby;
-				break;
 			//To Choice Point DoAttitudeCtrl
 			case (DoAttitudeCtrl):
 
@@ -293,6 +295,13 @@ void CCObsMng::EDROOM_SUB_Top_0::EDROOMBehaviour()
 			case (ExecObsMngTC):
 				//Execute Action 
 				FExecObsMng_TC();
+				//Next State is Standby
+				edroomNextState = Standby;
+				break;
+			//Next Transition is Init
+			case (Init):
+				//Execute Action 
+				FInit();
 				//Next State is Standby
 				edroomNextState = Standby;
 				break;
