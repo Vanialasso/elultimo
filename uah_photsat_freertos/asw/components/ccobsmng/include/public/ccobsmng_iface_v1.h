@@ -207,7 +207,7 @@ public:
 			TakeImage_ObservationProg,
 			TakeImage_ProgTakeImage,
 			Init,
-			ExecObss,
+			ExecObs,
 			EDROOMMemoryTrans };
 
 		//!Constants
