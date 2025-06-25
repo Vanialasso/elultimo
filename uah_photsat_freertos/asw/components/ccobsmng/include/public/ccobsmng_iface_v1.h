@@ -9,6 +9,12 @@
 #include <public/edroomsl_iface_v1.h>
 
 //******************************************************************************
+// Data Classes
+
+#include <public/cdtchandler_iface_v1.h>
+
+
+//******************************************************************************
 // Required software interfaces
 
 #include <public/pus_services_iface_v1.h>
@@ -200,8 +206,8 @@ public:
 			TakeImage,
 			TakeImage_ObservationProg,
 			TakeImage_ProgTakeImage,
-			ExecObsMngTC,
 			Init,
+			ExecObs,
 			EDROOMMemoryTrans };
 
 		//!Constants
@@ -259,7 +265,7 @@ public:
 		/**
 		 * \brief  
 		 */
-		void	FExecObsMng_TC();
+		void	FInit();
 
 		/**
 		 * \brief  
@@ -294,7 +300,7 @@ public:
 		/**
 		 * \brief 
 		 */
-		void	FInit();
+		void	FexecObs();
 
 	};
 

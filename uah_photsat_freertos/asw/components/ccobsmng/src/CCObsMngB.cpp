@@ -85,11 +85,20 @@ VNextTimeOut.GetTime();
 
 
 
-void	CCObsMng::EDROOM_CTX_Top_0::FExecObsMng_TC()
+void	CCObsMng::EDROOM_CTX_Top_0::FInit()
 
 {
-
-
+   //Define absolute time
+  Pr_Time time;
+	 
+	//Timing Service useful methods
+	 
+	//time.GetTime(); // Get current monotonic time
+	//time.Add(X,Y); // Add X sec + Y microsec
+VNextTimeOut+= Pr_Time(1,0); // Add X sec + Y microsec 
+time=VNextTimeOut; 
+   //Program absolute timer 
+   ObservTimer.InformAt( time ); 
 }
 
 
@@ -168,20 +177,17 @@ bool	CCObsMng::EDROOM_CTX_Top_0::GReadyToObservation()
 
 
 
-void	CCObsMng::EDROOM_CTX_Top_0::FInit()
+void	CCObsMng::EDROOM_CTX_Top_0::FexecObs()
 
 {
-   //Define absolute time
-  Pr_Time time;
-	 
-	//Timing Service useful methods
-	 
-	//time.GetTime(); // Get current monotonic time
-	//time.Add(X,Y); // Add X sec + Y microsec
-VNextTimeOut+= Pr_Time(1,0); // Add X sec + Y microsec 
-time=VNextTimeOut; 
-   //Program absolute timer 
-   ObservTimer.InformAt( time ); 
+   //Handle Msg->data
+  CDTCHandler & varSObsMng_TC = *(CDTCHandler *)Msg->data;
+	
+		// Data access
+	
+	// ... =varSObsMng_TC;
+varSobsMng_TC.ExecObs
+
 }
 
 
@@ -291,17 +297,17 @@ void CCObsMng::EDROOM_SUB_Top_0::EDROOMBehaviour()
 					edroomNextState = Observation;
 				 } 
 				break;
-			//Next Transition is ExecObsMngTC
-			case (ExecObsMngTC):
-				//Execute Action 
-				FExecObsMng_TC();
-				//Next State is Standby
-				edroomNextState = Standby;
-				break;
 			//Next Transition is Init
 			case (Init):
 				//Execute Action 
 				FInit();
+				//Next State is Standby
+				edroomNextState = Standby;
+				break;
+			//Next Transition is ExecObs
+			case (ExecObs):
+				//Msg->Data Handling 
+				FexecObs();
 				//Next State is Standby
 				edroomNextState = Standby;
 				break;
@@ -415,8 +421,8 @@ TEDROOMTransId CCObsMng::EDROOM_SUB_Top_0::EDROOMStandbyArrival()
 				 if (*Msg->GetPInterface() == Obsmng)
 				{
 
-					//Next transition is  ExecObsMngTC
-					edroomCurrentTrans.localId= ExecObsMngTC;
+					//Next transition is  ExecObs
+					edroomCurrentTrans.localId= ExecObs;
 					edroomCurrentTrans.distanceToContext = 0;
 					edroomValidMsg=true;
 				 }
