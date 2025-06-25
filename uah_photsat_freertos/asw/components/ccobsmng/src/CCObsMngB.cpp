@@ -186,7 +186,7 @@ void	CCObsMng::EDROOM_CTX_Top_0::FexecObs()
 		// Data access
 	
 	// ... =varSObsMng_TC;
-varSobsMng_TC.ExecObs
+varSobsMng_TC.ExecObss
 
 }
 
@@ -304,8 +304,8 @@ void CCObsMng::EDROOM_SUB_Top_0::EDROOMBehaviour()
 				//Next State is Standby
 				edroomNextState = Standby;
 				break;
-			//Next Transition is ExecObs
-			case (ExecObs):
+			//Next Transition is ExecObss
+			case (ExecObss):
 				//Msg->Data Handling 
 				FexecObs();
 				//Next State is Standby
@@ -421,8 +421,8 @@ TEDROOMTransId CCObsMng::EDROOM_SUB_Top_0::EDROOMStandbyArrival()
 				 if (*Msg->GetPInterface() == Obsmng)
 				{
 
-					//Next transition is  ExecObs
-					edroomCurrentTrans.localId= ExecObs;
+					//Next transition is  ExecObss
+					edroomCurrentTrans.localId= ExecObss;
 					edroomCurrentTrans.distanceToContext = 0;
 					edroomValidMsg=true;
 				 }
