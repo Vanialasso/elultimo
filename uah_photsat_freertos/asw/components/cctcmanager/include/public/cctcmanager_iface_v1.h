@@ -380,6 +380,16 @@ public:
 		 */
 		bool	GToReboot();
 
+		/**
+		 * \brief 
+		 */
+		bool	GFFwdObsMngTC();
+
+		/**
+		 * \brief 
+		 */
+		void	FFwdObsMngTC();
+
 	};
 
 	// ***********************************************************************

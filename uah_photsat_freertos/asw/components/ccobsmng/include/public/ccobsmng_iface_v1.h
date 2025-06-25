@@ -275,11 +275,6 @@ public:
 		/**
 		 * \brief  
 		 */
-		void	FProgTakeImage();
-
-		/**
-		 * \brief  
-		 */
 		void	FTakeImage();
 
 		/**
@@ -301,6 +296,11 @@ public:
 		 * \brief 
 		 */
 		void	FexecObs();
+
+		/**
+		 * \brief 
+		 */
+		void	FProgTakeImage();
 
 	};
 

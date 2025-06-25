@@ -248,6 +248,31 @@ return VTCExecCtrl.IsRebootTC();
 
 
 
+bool	CCTCManager::EDROOM_CTX_Top_0::GFFwdObsMngTC()
+
+{
+
+return VTCExecCtrl.IsObsMngTC();
+
+}
+
+
+
+void	CCTCManager::EDROOM_CTX_Top_0::FFwdObsMngTC()
+
+{
+   //Allocate data from pool
+  CDTCHandler * pSObsMng_TC_Data = EDROOMPoolCDTCHandler.AllocData();
+	
+		// Complete Data 
+	
+	*pSObsMng_TC_Data=VCurrentTC;
+   //Send message 
+   Obsmng.send(SObsMng_TC,pSObsMng_TC_Data,&EDROOMPoolCDTCHandler); 
+}
+
+
+
 	//********************************** Pools *************************************
 
 	//CEDROOMPOOLCDTCHandler
@@ -400,10 +425,10 @@ void CCTCManager::EDROOM_SUB_Top_0::EDROOMBehaviour()
 					edroomNextState = Ready;
 				 } 
 				//Evaluate Branch FFwdObsMngTC
-				else if( GFwdToHK_FDIR() )
+				else if( GFFwdObsMngTC() )
 				{
 					//Send Asynchronous Message 
-					FFwdHK_FDIRTC();
+					FFwdObsMngTC();
 
 					//Branch taken is HandleTC_FFwdObsMngTC
 					edroomCurrentTrans.localId =
